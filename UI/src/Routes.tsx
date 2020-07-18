@@ -5,6 +5,8 @@ import SignIn from "./pages/signIn/SignIn";
 import SignUp from "./pages/signUp/SignUp";
 import EmailSignUp from "./pages/signUp/EmailSignUp";
 import postWriting from "./pages/postWriting/PostWriting";
+//import for component test
+import Card from "./components/card/Card";
 
 function Routes() {
   return (
@@ -15,6 +17,7 @@ function Routes() {
         <Route exact path="/signUp" component={SignUp} />
         <Route exact path="/signUp/email" component={EmailSignUp} />
         <Route exact path="/post/writing" component={postWriting} />
+        <Route exact path="/test" component={Card} />
       </Switch>
     </Router>
   );
