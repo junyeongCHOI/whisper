@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import { ReactSVG } from "react-svg";
 
 interface CardProps {
-  width: string;
-  height: string;
+  style?: any;
   data: {
     text: string;
     imgUrl: string;
@@ -15,22 +15,21 @@ interface CardIconProps {
 }
 
 interface CardWrapProps {
-  readonly width: string;
-  readonly height: string;
+  readonly style: any;
 }
 
-const Card: React.FC<CardProps> = ({ width, height, data }) => {
+// 실 사용시 주석부분을 사용, 주석 아래의 JSX는 제거.
+
+const Card: React.FC<CardProps> = ({ style, data }) => {
+  const [isLiked, setLiked] = useState<boolean>(false);
+
   return (
-    // <CardWrap width={width} height={height}>
-    <CardWrap width="312px" height="452px">
-      {/* <CardIcon imgUrl={data.imgUrl} /> */}
-      <CardIcon imgUrl={process.env.PUBLIC_URL + "/images/happy.png"} />
-      {/* <CardText>{data.text}</CardText> */}
-      <CardText>
-        세상에 모든 진심은
-        <br />
-        한결같음으로 증명된다.
-      </CardText>
+    <CardWrap style={style}>
+      <HeartIcon onClick={() => setLiked(!isLiked)}>
+        <ReactSVG src={isLiked ? "/svgs/heart.svg" : "/svgs/e-heart.svg"} />
+      </HeartIcon>
+      <CardIcon imgUrl={data.imgUrl} />
+      <CardText>{data.text}</CardText>
     </CardWrap>
   );
 };
@@ -38,8 +37,7 @@ const Card: React.FC<CardProps> = ({ width, height, data }) => {
 export default Card;
 
 const CardWrap = styled.div<CardWrapProps>`
-  width: ${({ width }) => width};
-  height: ${({ height }) => height};
+  position: relative;
   border-radius: 3px;
   box-shadow: 0 2px 6px 0 rgba(47, 83, 151, 0.1);
   background-color: #ffffff;
@@ -61,10 +59,18 @@ const CardIcon = styled.div<CardIconProps>`
 `;
 
 //width, height 는 상의 후 결정.
-const CardText = styled.div`
+const CardText = styled.text`
   line-height: 1.78;
   font-size: 18px;
-  font-weight: 600;
   text-align: center;
   color: #1b2437;
+  font-weight: 600;
+`;
+
+const HeartIcon = styled.div`
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  font-size: 24px;
+  cursor: pointer;
 `;
