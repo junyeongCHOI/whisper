@@ -1,0 +1,11 @@
+@media (max-width: 700px) {
+  .SignImage {
+    height: 60%;
+  }
+}
+
+.SignImage {
+  background-position: center center no-repeat;
+  background-size: cover;
+  background-image: url("../images/main_image.png");
+}

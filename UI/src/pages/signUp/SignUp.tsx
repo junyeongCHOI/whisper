@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import { Row, Col } from "antd";
 import "antd/dist/antd.css";
 import styled from "styled-components";
+import "../../styles/ResponsiveCss.css";
 
 function SignUp() {
   const [email, setEmail] = useState("");
@@ -39,7 +41,7 @@ function SignUp() {
 
   const passwordCheck = (e: string) => {
     setPassword(e);
-    const passwordRule = /^.*(?=^.{8,20}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/;
+    const passwordRule = /^.*(?=^.{8,20}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=*]).*$/;
 
     if (passwordRule.test(e) === false) {
       console.log("비밀번호는 영어, 특수문자, 숫자 포함 8~20자여야 합니다.");
@@ -93,9 +95,9 @@ function SignUp() {
   }; //백으로 유저 정보 보내기
 
   return (
-    <Row style={{ height: "100%" }}>
-      <Col span={12} />
-      <Col span={12} style={{ backgroundColor: "#f8f8f4" }}>
+    <Row style={{ height: "100vh" }}>
+      <Col className="SignImage" flex="1 1 350px" />
+      <Col flex="1 1 350px" style={{ backgroundColor: "#f8f8f4" }}>
         <SiteName>소근</SiteName>
         <Right>
           <Title>회원가입</Title>
@@ -105,12 +107,12 @@ function SignUp() {
             <CheckBox onClick={duplicateEmailCheck}>중복체크</CheckBox>
           </div>
           <div>
-            <InputTitle>비밀번호</InputTitle>
-            <InputBox onChange={(e) => passwordCheck(e.target.value)} />
+            <InputTitle style={{ marginTop: "40px" }}>비밀번호</InputTitle>
+            <InputBox type="password" onChange={(e) => passwordCheck(e.target.value)} />
           </div>
           <div>
             <InputTitle>비밀번호 확인</InputTitle>
-            <InputBox onChange={(e) => setConfirm(e.target.value)} />
+            <InputBox type="password" onChange={(e) => setConfirm(e.target.value)} />
           </div>
           <div>
             <InputTitle>닉네임</InputTitle>
@@ -118,7 +120,9 @@ function SignUp() {
           </div>
           <div>
             <SignUpButton onClick={register}>Register</SignUpButton>
-            <LoginButton>Login</LoginButton>
+            <Link to="/">
+              <LoginButton>Login</LoginButton>
+            </Link>
           </div>
         </Right>
       </Col>
@@ -174,11 +178,6 @@ const InputBox = styled.input`
 `;
 
 const CheckBox = styled.button`
-  width: 90px;
-  height: 36px;
-  border-radius: 20px;
-  border: solid 1px #686565;
-  background-color: rgba(255, 255, 255, 0);
   font-size: 12px;
   font-weight: 300;
   letter-spacing: 0.34px;
@@ -186,7 +185,8 @@ const CheckBox = styled.button`
   text-align: center;
   line-height: 36px;
   position: absolute;
-  margin-left: 10px;
+  margin-left: -355px;
+  margin-top: 35px;
 `;
 
 const SignUpButton = styled.button`

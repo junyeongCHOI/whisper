@@ -1,14 +1,12 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import axios from "axios";
 import { Row, Col } from "antd";
 import "antd/dist/antd.css";
 import styled from "styled-components";
 import "../../styles/ResponsiveCss.css";
 
-function EmailSignIn() {
+function Password() {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
 
   const EmailCheck = (e: string) => {
     const emailRule = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
@@ -21,30 +19,6 @@ function EmailSignIn() {
     }
   }; //이메일 형식 확인
 
-  const passwordCheck = (e: string) => {
-    setPassword(e);
-    const passwordRule = /^.*(?=^.{8,20}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=*]).*$/;
-
-    if (passwordRule.test(e) === false) {
-      console.log("비밀번호는 영어, 특수문자, 숫자 포함 8~20자여야 합니다.");
-    } else {
-      setPassword(e);
-      console.log("성공");
-    }
-  }; //비밀번호 형식 확인
-
-  const EmailLogin = async () => {
-    try {
-      let res = await axios.post(`${""}user/sign-in`, {
-        email: email,
-        password: password,
-      });
-      console.log(res);
-    } catch (e) {
-      console.log(e);
-    }
-  }; //이메일 로그인
-
   const SearchPassword = async () => {
     try {
       let res = await axios.post(`${""}/user/password`, {
@@ -54,7 +28,7 @@ function EmailSignIn() {
     } catch (e) {
       console.log(e);
     }
-  };
+  }; //비밀번호 찾기
 
   return (
     <Row style={{ height: "100vh" }}>
@@ -62,20 +36,13 @@ function EmailSignIn() {
       <Col flex="1 1 350px" style={{ backgroundColor: "#f8f8f4" }}>
         <SiteName>소근</SiteName>
         <Right>
-          <Title>로그인</Title>
+          <Title>비밀번호 찾기</Title>
           <div>
             <InputTitle>메일</InputTitle>
             <InputBox onChange={(e) => EmailCheck(e.target.value)} />
           </div>
-          <div>
-            <InputTitle>비밀번호</InputTitle>
-            <InputBox type="password" onChange={(e) => passwordCheck(e.target.value)} />
-          </div>
           <div style={{ width: "351px", display: "flex", justifyContent: "space-between" }}>
-            <LoginButton onClick={EmailLogin}>Login</LoginButton>
-            <Link to="/searchPassword">
-              <FindPassword onClick={SearchPassword}>비밀번호 찾기</FindPassword>
-            </Link>
+            <FindPassword onClick={SearchPassword}>확인</FindPassword>
           </div>
         </Right>
       </Col>
@@ -130,7 +97,7 @@ const InputBox = styled.input`
   background-color: #f8f8f4;
 `;
 
-const LoginButton = styled.button`
+const FindPassword = styled.button`
   width: 160px;
   height: 40px;
   border-radius: 20px;
@@ -139,13 +106,4 @@ const LoginButton = styled.button`
   margin-top: 31px;
 `;
 
-const FindPassword = styled.button`
-  width: 160px;
-  height: 40px;
-  border-radius: 20px;
-  border: solid 1px #686565;
-  background-color: rgba(255, 255, 255, 0);
-  margin-top: 31px;
-`;
-
-export default EmailSignIn;
+export default Password;
