@@ -9,6 +9,7 @@ import bcrypt
 import requests
 import random
 
+from jsonschema import validate, ValidationError
 from datetime import datetime, timedelta
 from flask import Blueprint, jsonify, request
 from connections import db_connector
@@ -17,6 +18,7 @@ from models import ModelDao
 from decorator import login_required
 from string import punctuation, ascii_letters, digits
 from send_email  import send_email
+
 
 user_app = Blueprint('user', __name__)
 model_dao = ModelDao()
