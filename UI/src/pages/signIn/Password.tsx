@@ -9,7 +9,7 @@ function Password() {
   const [email, setEmail] = useState("");
 
   const EmailCheck = (e: string) => {
-    const emailRule = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+    const emailRule = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
 
     if (emailRule.test(e) === false) {
       console.log("이메일 형식이 정확한지 다시 한번 확인해 주세요.");

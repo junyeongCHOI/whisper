@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, RouteComponentProps } from "react-router-dom";
 import axios from "axios";
 import Kakao from "kakaojs";
 import { GoogleLogin } from "react-google-login";
+import Modal from "../../components/Modal";
 import { Row, Col } from "antd";
 import "antd/dist/antd.css";
 import styled from "styled-components";
@@ -13,10 +14,17 @@ declare global {
     Kakao: any;
   }
 }
-
 Kakao.init("418bd12c3a35441d58e113ac8cd7b654");
 
 const SignIn: React.FunctionComponent<RouteComponentProps> = (props) => {
+  const [nickname, setNickname] = useState("");
+  const [modalStatus, setModalStatus] = useState(false);
+  const [socialKinds, setSocialKinds] = useState("");
+
+  const NicknameSetting = (e: string) => {
+    setNickname(e);
+  }; //닉네임 설정
+
   const KakaoLogin = () => {
     Kakao.Auth.login({
       success: function (authObj: any) {
@@ -27,7 +35,7 @@ const SignIn: React.FunctionComponent<RouteComponentProps> = (props) => {
             Authorization: authObj.access_token,
           },
           body: JSON.stringify({
-            nickname: "채린호호2",
+            nickname: nickname,
           }),
         })
           .then((res) => res.json())
@@ -62,7 +70,7 @@ const SignIn: React.FunctionComponent<RouteComponentProps> = (props) => {
         // },
         // data: {
         Authorization: response.tokenObj.access_token,
-        nickname: "nickname",
+        nickname: nickname,
         googleId: response.tokenObj.googleId,
         //},
       });
@@ -71,6 +79,11 @@ const SignIn: React.FunctionComponent<RouteComponentProps> = (props) => {
       console.log(e);
     }
   }; //구글 소셜 로그인
+
+  const modalPage = (e: string) => {
+    setModalStatus(true);
+    setSocialKinds(e);
+  }; //모달 띄우기 및 소셜 로그인 종류 저장
 
   return (
     <Row style={{ height: "100vh", position: "relative" }}>
@@ -81,13 +94,13 @@ const SignIn: React.FunctionComponent<RouteComponentProps> = (props) => {
           <Link to="/emailSignIn">
             <SignInButton theme={theme}>이메일로 로그인하기</SignInButton>
           </Link>
-          <SignInButton theme={theme} onClick={KakaoLogin}>
+          <SignInButton theme={theme} onClick={() => modalPage("kakao")}>
             카카오톡으로 로그인하기
           </SignInButton>
           <GoogleLogin
             clientId="999952350863-tuacfmh4cjfangjkn58pbnio6boa7non.apps.googleusercontent.com"
             render={(renderProps) => (
-              <SignInButton theme={theme} onClick={renderProps.onClick} disabled={renderProps.disabled}>
+              <SignInButton theme={theme} onClick={() => modalPage("google")} disabled={renderProps.disabled}>
                 구글로 로그인하기
               </SignInButton>
             )}
@@ -99,14 +112,7 @@ const SignIn: React.FunctionComponent<RouteComponentProps> = (props) => {
           </Link>
         </Right>
       </Col>
-      <div style={{ height: "100%", width: "100%", position: "absolute" }}>
-        <div style={{ height: "100%", width: "100%", backgroundColor: "gray", opacity: "0.5", position: "relative" }} />
-        <div style={{ height: "30%", width: "40%", backgroundColor: "white", position: "relative", top: "-70%", left: "30%", padding: "3% 10%", borderRadius: "15px" }}>
-          <InputTitle>닉네임을 써주세요!</InputTitle>
-          <InputBox />
-          <SignUpButton style={{ display: "block" }}>확인</SignUpButton>
-        </div>
-      </div>
+      {modalStatus !== false ? <Modal NicknameSetting={NicknameSetting} KakaoLogin={KakaoLogin} GoogleLogin={responseGoogle} SocialKinds={socialKinds} Nickname={nickname} /> : <></>}
     </Row>
   );
 };
@@ -142,31 +148,6 @@ const SignInButton = styled.button`
   font-weight: 300;
   letter-spacing: 0.46px;
   color: ${(props) => props.theme.color};
-`;
-
-const InputTitle = styled.p`
-  margin: 20px 0 11px 0;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.34px;
-  color: #6b6c6f;
-`;
-
-const InputBox = styled.input`
-  width: 351px;
-  height: 38px;
-  opacity: 0.7;
-  border-radius: 4px;
-  border: solid 1px #686565;
-`;
-
-const SignUpButton = styled.button`
-  width: 160px;
-  height: 40px;
-  border-radius: 20px;
-  border: solid 2px #686565;
-  background-color: rgba(255, 255, 255, 0);
-  margin: 31px 30px 0 0;
 `;
 
 const theme = {
